@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="../dist/imageMini.min.js"></script>
+    </head>
+    <body>
+        <input type="file" id="fileEl" onchange="onChange(this)" />
+        <div>
+            <img src="" alt="" id="imgEl" />
+        </div>
+        <script type="text/javascript">
+            function onChange( el ) {
+                var file = el.files[0];
+
+                if ( !file ) {
+                    return;
+                }
+
+                imageMini.compressFile( file, function( srcWidth, srcHeight ) {
+                    return {
+                        maxWidth: 800,
+                        quality: 0.6
+                    };
+                }, function( compressedFile, compressed ) {
+                    console.log('压缩前的图片大小为：', file.size / 1000 + 'KB', '宽为：' + compressed.srcWidth, '高为：' + compressed.srcHeight);
+                    console.log('压缩后的图片大小为：', compressedFile.size / 1000 + 'KB', '宽为：' + compressed.width, '高为：' + compressed.height);
+                    document.getElementById('imgEl').src = compressed.dataURL;
+
+                    // imageMini.download( compressed.dataURL );
+                });
+            }
+        </script>
+    </body>
+</html>
